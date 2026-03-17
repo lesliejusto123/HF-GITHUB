@@ -20,8 +20,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git config --global credential.helper store
-          echo "https://user:${HF_TOKEN}@huggingface.co" > ~/.git-credentials
-
-          git remote add hf-space "https://huggingface.co/spaces/lesliejusto123/openclaw-researcher"
+          git remote add hf-space "https://lesliejusto123:${HF_TOKEN}@huggingface.co/spaces/lesliejusto123/openclaw-researcher"
           git push hf-space main --force
