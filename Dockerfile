@@ -1,23 +1,22 @@
-# Updated Dockerfile
+# Dockerfile
 
-# Base image
-FROM ruby:2.7
+FROM node:22
 
-# Set environment variables
-ENV BUNDLE_PATH=/usr/local/bundle
-ENV BUNDLE_APP_CONFIG=/usr/local/bundle
-
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy Gemfile and install dependencies
-COPY Gemfile Gemfile.lock ./ 
-RUN bundle install
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Copy application code
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
 
-# Fix the missing baseUrl for the gemini provider in OpenClaw configuration
-ENV OPENCLAW_CONFIG='{"baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai/"}'
+# Configuration for OpenClaw provider
+ENV OPENCLAW_CONFIG='{"provider": {"type": "gemini", "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai/"}}'
 
-CMD ["your-start-command"] 
+# Expose port and start
+EXPOSE 3000
+CMD [ "node", "index.js" ]
